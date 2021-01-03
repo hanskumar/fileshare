@@ -1,0 +1,65 @@
+/**
+ *  Load all Depandancies
+*/
+require("dotenv").config();
+const express       = require('express')
+const app           = express();
+const path          = require('path');
+const dotenv        = require('dotenv');
+const bodyParser    = require('body-parser');
+const ejs           = require('ejs');
+var multer          = require('multer')
+
+/*-----Required DB---------*/
+require('./config/dbConnect')();
+
+
+app.use(express.json());
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+/**
+ *  view engine setup
+*/
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+app.set('views', path.join(__dirname, 'views'));
+
+
+app.listen(process.env.PORT, console.log(`Listening on port ${process.env.PORT}.`));
+
+
+/**
+ * Image uploading Config
+ */
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+        //cb(null, file.originalname + '-' + Date.now());
+    }
+});
+
+let upload = multer({ 
+    storage:fileStorage,
+    limit: {fileSize: 1000000* 500}, // 500MB
+
+}).single('upload_file');
+
+app.use(upload);
+//
+
+
+app.use('/',require('./routes/routes'));
+
+//The 404 Route (ALWAYS Keep this as the last route)
+app.get('*', function(req, res){
+    //res.render('error/404', { title: res });
+    res.json({msg:"No Routes Found"});
+}); 
+
+module.exports = app;
