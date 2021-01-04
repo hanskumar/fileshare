@@ -22,7 +22,7 @@
                 <small> <%= filesize %>  KB</small>
             </div>
             <div class="send-btn-container">
-                <a href="<%= downloadlink %>">Download file</a>
+                <a href="/uploads/<%= fileName %>" download="/uploads/<%= fileName %>">Download file</a>
             </div>
         <% } else { %>
             <p><%= res %> :fire </p>

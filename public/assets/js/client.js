@@ -49,24 +49,18 @@ $(document).on('change', '#fileInput', function () {
     })
   }
 
- /*  $(document).ready(function () {
-        $('#emailForm').submit(function (event) {
-            alert("hello");
-                event.preventDefault();
-               //collect the form data using Id Selector what ever data you need to send to server
-                let fromEmail=$('#fromEmail').val();
-                let toEmail= $('#toEmail').val()
+  function copy() {
+    var t = document.getElementById('fileURL')
+    t.innerHTML = document.getElementById('fileURL').value
+    t.select()
+    try {
+      var successful = document.execCommand('copy')
+      var msg = successful ? 'successfully' : 'unsuccessfully';
 
-                $.ajax({
-                    url: '/mailsend',
-                    data: JSON.stringify({"fromEmail": fromEmail, "toEmail": toEmail }),
-                    processData: false,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    success: function (data) {
-                        alert(data);
-                        console.log(data);
-                    }
-                });
-            });
-    }) */
+      document.getElementById("toast1").style.display = 'block';
+      document.getElementById("toast1").innerHTML = 'Text coppied ' + msg  
+    } catch (err) {
+      console.log('Unable to copy text')
+    }
+    t.innerHTML = ''
+  }

@@ -105,21 +105,7 @@ exports.download = async (req, res, next) => {
                 //----------Download File
                 let download_url = `${process.env.APP_BASE_URL}/${file_data.file_url}`;
                 let markup = `<p><a download=${download_url} href=${download_url}>Download</a></p>\n`;
-                
-                //res.end(markup);
-
-                /* let file = `${process.env.APP_BASE_URL}/${file_data.file_url}`;
-                res.download(file);
-                console.log(file); */
-
-
-                
-                //const files = `${__dirname}/public/uploads/2021-01-04T10-07-31.876Z-Desert.jpg`;
-
-                //let absPath = path.join(__dirname, '/uploads/', '2021-01-04T11-43-37.699Z-Koala.jpg');
-                //let relPath = path.join('./uploads', '2021-01-04T11-43-37.699Z-Koala.jpg'); // path relative to server root
-
-                //console.log(absPath);    
+                 
                 res.download(`${process.env.APP_BASE_URL}/uploads/2021-01-04T10-07-31.876Z-Desert.jpg`);
 
 
