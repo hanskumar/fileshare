@@ -28,7 +28,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
 
 
-app.listen(process.env.PORT, console.log(`Listening on port ${process.env.PORT}.`));
+app.listen(process.env.PORT, console.log(`Listening on port ${process.env.PORT}.,URL:${process.env.APP_BASE_URL}`));
 
 
 /**

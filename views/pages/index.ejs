@@ -7,12 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/menu.css">
+    
 </head>
 
 <body>
     <!-- <img src="/assets/images/logo.png" alt="Ishare logo" class="logo"> -->
+        <!-- Button trigger modal -->
+    
     <section class="upload-container">
-       
         <form enctype="multipart/form-data" action="/api/UploadFiles" method="post" name="file_upload_form" id="file_upload_form">
             
             <div class="drop-zone">
@@ -52,7 +55,7 @@
 
             <div class="input-container">
                 <input type="text" id="fileURL" readonly>
-                <img src="/assets/images/copy-icon.svg" id="copyURLBtn" alt="copy to clipboard icon">
+                <img src="/uploads/2021-01-04T10-46-30.485Z-Desert.jpg" id="copyURLBtn" alt="copy to clipboard icon">
             </div>
 
 
@@ -85,6 +88,7 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script> 
     <script src="assets/js/client.js"></script>
+
 </body>
 
 </html>

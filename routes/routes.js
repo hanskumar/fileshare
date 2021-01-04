@@ -10,7 +10,7 @@
     router.get("/files/:uuid", FileshareController.files);
 
     /*-------Download link on mail or button-----------*/
-    router.get("/download", FileshareController.download);
+    router.get("/download/:uuid", FileshareController.download);
 
 
     /*-------Download link on mail or button-----------*/

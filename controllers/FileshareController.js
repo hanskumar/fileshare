@@ -3,6 +3,10 @@ const { v4: uuidv4 } = require('uuid');
 const sendMail = require('../config/mailer');
 const mailTemplate = require('../config/mailer');
 
+const fs = require('fs');
+
+var path = require('path');
+
 exports.index = (req, res, next) => {
 
     res.render('pages/index', {
@@ -54,7 +58,7 @@ exports.files = async (req, res, next) => {
                     title: 'Download Your file Share',
                     fileName:response.file_name,
                     filesize:response.file_size,
-                    downloadlink:`${process.env.APP_BASE_URL}/download/${response.file_name}`,
+                    downloadlink:`${process.env.APP_BASE_URL}/download/${response.uuid}`,
                     status:true,
                 });
             } else {
@@ -84,10 +88,59 @@ exports.files = async (req, res, next) => {
 }
 
 
-exports.download = (req, res, next) => {
-    res.render('pages/download', {
+exports.download = async (req, res, next) => {
+   console.log(req.params);
+   //res.json({msg:req.params});
+
+   if(req.params){
+
+        //----Check uuid from DB
+        const file_data = await file.findOne({uuid:req.params.uuid});
+
+        try{
+            //console.log(file_data);
+            /*----File Exists---*/
+            if(file_data){
+
+                //----------Download File
+                let download_url = `${process.env.APP_BASE_URL}/${file_data.file_url}`;
+                let markup = `<p><a download=${download_url} href=${download_url}>Download</a></p>\n`;
+                
+                //res.end(markup);
+
+                /* let file = `${process.env.APP_BASE_URL}/${file_data.file_url}`;
+                res.download(file);
+                console.log(file); */
+
+
+                
+                //const files = `${__dirname}/public/uploads/2021-01-04T10-07-31.876Z-Desert.jpg`;
+
+                //let absPath = path.join(__dirname, '/uploads/', '2021-01-04T11-43-37.699Z-Koala.jpg');
+                //let relPath = path.join('./uploads', '2021-01-04T11-43-37.699Z-Koala.jpg'); // path relative to server root
+
+                //console.log(absPath);    
+                res.download(`${process.env.APP_BASE_URL}/uploads/2021-01-04T10-07-31.876Z-Desert.jpg`);
+
+
+            } else {
+                res.json({response:'',message:'Link has Expired..!'});
+            }
+
+
+        } catch(err){
+
+            res.json({response:err});
+        }
+
+   }
+
+
+
+
+    /* res.render('pages/download', {
         title: 'File Share'
-    });
+    }); */
 }
 
 exports.mailsend =async (req, res, next) => {
