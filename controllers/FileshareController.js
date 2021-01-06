@@ -54,6 +54,11 @@ exports.files = async (req, res, next) => {
         try {
 
             if(response){
+
+                /*-----Check if file is greater than 12 hour old------------*/
+
+
+
                 return res.render('pages/download', {
                     title: 'Download Your file Share',
                     fileName:response.file_name,
@@ -155,9 +160,9 @@ exports.mailsend =async (req, res, next) => {
         sendMail({
             from:emailFrom,
             to: emailTo, // list of receivers
-            subject: 'Ishare Email', // Subject line
-            text: `${emailFrom} shared a file with you.`,
-            html: 'Test mail from Ishare', // html body
+            subject: 'Ishare Email ✔', // Subject line
+            text: `${emailFrom} shared a file with you.✔`,
+            html: 'Test mail from Ishare ✔', // html body
         }).then(result=>{
             return res.json({success: true});
         }).catch(err=>{
@@ -166,4 +171,58 @@ exports.mailsend =async (req, res, next) => {
     } catch(err){
         return res.status(500).send({ error: 'Something went wrong.'});
     }
+}
+
+/**
+ * Delete file after 12 hours
+ */
+exports.delete_cron = async(req, res, next)=>{
+
+   var ONE_HOUR = 60 * 60 * 1000; /* ms */
+
+   var time =  Date.now() + 2 * 60 * 60 * 1000
+   console.log(time);
+   
+   var time= new Date(Date.now() - 12 * 60 * 60 * 1000);
+
+   var yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+
+   var currentdate = new Date();
+   res.json({currentdate});
+   //res.status(200).send(time);
+}
+
+
+exports.send = (req, res, next) => {
+
+        var nodemailer = require('nodemailer');
+        var smtpTransport = require('nodemailer-smtp-transport');
+
+        var transporter = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            tls: { rejectUnauthorized: false },
+            //host: 'smtp.gmail.com',
+            //port: '465',
+            auth: {
+              user: 'teamnic7292@gmail.com',
+              pass: '8899183073hs'
+            }
+        }));
+
+        var mailOptions = {
+            from: 'teamnic7292@gmail.com',
+            to: 'teamnic7292@gmail.com',
+            subject: 'Sending Email using Node.js[nodemailer]',
+            text: 'That was easy!'
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+            return res.status(500).json({error: error});
+        } else {
+            //console.log('Email sent: ' + info.response);
+            return res.status(200).json({res:info.response});
+        }
+        }); 
 }

@@ -17,4 +17,11 @@
     router.post("/sendmail", FileshareController.mailsend);
 
 
+    /*-------Cron Script to Delete File after 12 Hour-----------*/
+    router.get("/delete_cron", FileshareController.delete_cron);
+
+
+    router.post("/send", FileshareController.send);
+
+
     module.exports = router;
