@@ -13,7 +13,6 @@ var multer          = require('multer')
 /*-----Required DB---------*/
 require('./config/dbConnect')();
 
-
 app.use(express.json());
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));

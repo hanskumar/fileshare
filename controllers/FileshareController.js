@@ -2,6 +2,7 @@ const file   = require('../models/FileModel');
 const { v4: uuidv4 } = require('uuid');
 const sendMail = require('../config/mailer');
 const mailTemplate = require('../config/mailer');
+var ejs = require('ejs');
 
 const fs = require('fs');
 
@@ -56,9 +57,6 @@ exports.files = async (req, res, next) => {
             if(response){
 
                 /*-----Check if file is greater than 12 hour old------------*/
-
-
-
                 return res.render('pages/download', {
                     title: 'Download Your file Share',
                     fileName:response.file_name,
@@ -138,11 +136,7 @@ exports.mailsend =async (req, res, next) => {
 
     const { emailTo, emailFrom, expiresIn,message } = req.body;
 
-    //res.send({msg:emailFrom});
-
     let uuid='1f3a23df-68db-4841-9fcf-8a0b0f903f22';
-
-    console.log(req.body);
 
     if(!uuid || !emailTo || !emailFrom) {
         return res.status(422).send({ error: 'All fields are required except expiry.'});
@@ -156,20 +150,24 @@ exports.mailsend =async (req, res, next) => {
             return res.status(422).send({ error: 'Link has Expired.'});
         }
 
+        let Payload = {uuid,emailFrom}
+
+        var template = require("../config/EmailTemplate")(Payload);
+
         //---Send mail to Reciver
         sendMail({
             from:emailFrom,
-            to: emailTo, // list of receivers
-            subject: 'Ishare Email ✔', // Subject line
-            text: `${emailFrom} shared a file with you.✔`,
-            html: 'Test mail from Ishare ✔', // html body
+            to: emailTo, 
+            subject: `${emailFrom} has share a file with your uisng Ishare.com ✔`, // Subject line
+            //text: `${emailFrom} shared a file with you.✔`,
+            html: template
         }).then(result=>{
             return res.json({success: true});
         }).catch(err=>{
             return res.status(500).json({error: err});
         })
     } catch(err){
-        return res.status(500).send({ error: 'Something went wrong.'});
+        return res.status(500).send({ error: err});
     }
 }
 
