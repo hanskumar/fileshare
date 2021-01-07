@@ -31,21 +31,25 @@ $(document).on('change', '#fileInput', function () {
     }).submit(); 
   }); 
 
-
-
   const $form = $('#emailForm');
 
   $form.on('submit', submitHandler)
   
   function submitHandler (e) {
     e.preventDefault()
-  
     $.ajax({
       url: '/sendmail',
       type:'POST',
       data: $form.serialize()
     }).done(response => {
         console.log(response)
+        if(!response.success){
+          toastr.error(response.message);
+          $(".sharing-container").css("display", "none");
+          $form.reset();
+        } else {
+          toastr.success(response.message);
+        }
     })
   }
 
@@ -57,10 +61,12 @@ $(document).on('change', '#fileInput', function () {
       var successful = document.execCommand('copy')
       var msg = successful ? 'successfully' : 'unsuccessfully';
 
-      document.getElementById("toast1").style.display = 'block';
-      document.getElementById("toast1").innerHTML = 'Text coppied ' + msg  
+      //document.getElementById("toast1").style.display = 'block';
+      //document.getElementById("toast1").innerHTML = 'Text coppied ' + msg  
+      toastr.success('Text coppied ' + msg);
     } catch (err) {
-      console.log('Unable to copy text')
+      console.log('Unable to copy text');
+      toastr.error('Unable to copy text');
     }
     t.innerHTML = ''
   }

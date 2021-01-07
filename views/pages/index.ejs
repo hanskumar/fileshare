@@ -8,13 +8,23 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/menu.css">
-    
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <style>
+        .toast-top-right {
+        top: 35px;
+        right: 166px;
+    }
+    </style>
 </head>
 
 <body>
     <!-- <img src="/assets/images/logo.png" alt="Ishare logo" class="logo"> -->
         <!-- Button trigger modal -->
-    
+
     <section class="upload-container">
         <form enctype="multipart/form-data" action="/api/UploadFiles" method="post" name="file_upload_form" id="file_upload_form">
             
@@ -63,12 +73,12 @@
                 <form method="post" action="/mailsend" id="emailForm">
                     <div class="filed">
                         <label for="fromEmail">Your email</label>
-                        <input type="email" autocomplete="email" required name="emailFrom" id="fromEmail" >
+                        <input type="email" autocomplete="email" name="emailFrom" id="fromEmail" required>
                     </div>
 
                     <div class="filed">
                         <label for="toEmail">Receiver's email</label>
-                        <input type="email" required autocomplete="receiver" name="emailTo" id="toEmail">
+                        <input type="email" autocomplete="receiver" name="emailTo" id="toEmail" required>
                     </div>
                     <div class="filed">
                         <label for="toEmail">Message</label>
@@ -82,12 +92,8 @@
         </div>
     </section>
     <div class="image-vector" id="toast1"></div>
-    <div class="toast" ></div>
-
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <div class="toast1" ></div>
     <script src="http://malsup.github.com/jquery.form.js"></script> 
     <script src="assets/js/client.js"></script>
-
 </body>
-
 </html>

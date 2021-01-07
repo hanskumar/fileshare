@@ -9,10 +9,9 @@ const fs = require('fs');
 var path = require('path');
 
 exports.index = (req, res, next) => {
-
     res.render('pages/index', {
         title: 'File Share'
-    });
+    }); 
 }
 
 exports.UploadFiles = async (req, res, next) => {
@@ -20,7 +19,7 @@ exports.UploadFiles = async (req, res, next) => {
     const upload_file = req.file;
     console.log(req.file);
     if(!upload_file){
-        res.send({ status: false,messege:"File is empty"})
+        res.send({ status: false,messege:"File is empty"});
     }
 
     let files = new file({
@@ -39,6 +38,7 @@ exports.UploadFiles = async (req, res, next) => {
     const response = await files.save();
 
     try{
+        
         res.json({ file: `${process.env.APP_BASE_URL}/files/${response.uuid}`,status:true});
     } catch(err){
         res.json({error:err});
@@ -139,7 +139,7 @@ exports.mailsend =async (req, res, next) => {
     let uuid='1f3a23df-68db-4841-9fcf-8a0b0f903f22';
 
     if(!uuid || !emailTo || !emailFrom) {
-        return res.status(422).send({ error: 'All fields are required except expiry.'});
+        return res.status(200).send({success:false, message: 'All fields are required except Message.'});
     }
 
     const files = await file.findOne({uuid: uuid});
@@ -147,7 +147,7 @@ exports.mailsend =async (req, res, next) => {
     try{
 
         if(!files){
-            return res.status(422).send({ error: 'Link has Expired.'});
+            return res.status(200).send({ success:false,message: 'Link has Expired.'});
         }
 
         let Payload = {uuid,emailFrom}
@@ -162,9 +162,9 @@ exports.mailsend =async (req, res, next) => {
             //text: `${emailFrom} shared a file with you.✔`,
             html: template
         }).then(result=>{
-            return res.json({success: true});
+            return res.status(200).json({success: true,message:'✔ Mail sent Successfully.'});
         }).catch(err=>{
-            return res.status(500).json({error: err});
+            return res.status(500).json({message: "Something Went Wrong,Please Try Again.",success: false});
         })
     } catch(err){
         return res.status(500).send({ error: err});
@@ -188,39 +188,4 @@ exports.delete_cron = async(req, res, next)=>{
    var currentdate = new Date();
    res.json({currentdate});
    //res.status(200).send(time);
-}
-
-
-exports.send = (req, res, next) => {
-
-        var nodemailer = require('nodemailer');
-        var smtpTransport = require('nodemailer-smtp-transport');
-
-        var transporter = nodemailer.createTransport(smtpTransport({
-            service: 'gmail',
-            tls: { rejectUnauthorized: false },
-            //host: 'smtp.gmail.com',
-            //port: '465',
-            auth: {
-              user: 'teamnic7292@gmail.com',
-              pass: '8899183073hs'
-            }
-        }));
-
-        var mailOptions = {
-            from: 'teamnic7292@gmail.com',
-            to: 'teamnic7292@gmail.com',
-            subject: 'Sending Email using Node.js[nodemailer]',
-            text: 'That was easy!'
-        };
-
-        transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-            return res.status(500).json({error: error});
-        } else {
-            //console.log('Email sent: ' + info.response);
-            return res.status(200).json({res:info.response});
-        }
-        }); 
 }

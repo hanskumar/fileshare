@@ -20,8 +20,10 @@
     /*-------Cron Script to Delete File after 12 Hour-----------*/
     router.get("/delete_cron", FileshareController.delete_cron);
 
-
-    router.post("/send", FileshareController.send);
+    router.get('/test', (req, res)=>{
+        req.flash('success', 'user succesfulyl registered')
+        res.redirect('/')
+    })
 
 
     module.exports = router;
